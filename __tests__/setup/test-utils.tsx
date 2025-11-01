@@ -4,6 +4,7 @@ import type React from "react"
 import type { ReactElement } from "react"
 import { render, type RenderOptions } from "@testing-library/react"
 import { ThemeProvider } from "@/components/theme-provider"
+import { screen } from "@testing-library/react"
 
 // Mock Next.js router
 jest.mock("next/navigation", () => ({
@@ -109,11 +110,11 @@ export const waitForLoadingToFinish = async () => {
 
   // Wait for common loading indicators to disappear
   const loadingIndicators = [
-    () => queryByText(/loading/i),
-    () => queryByText(/signing in/i),
-    () => queryByText(/creating account/i),
-    () => document.querySelector(".loading-spinner"),
-  ]
+  () => screen.queryByText(/loading/i),
+  () => screen.queryByText(/signing in/i),
+  () => screen.queryByText(/creating account/i),
+  () => document.querySelector(".loading-spinner"),
+]
 
   for (const getIndicator of loadingIndicators) {
     const indicator = getIndicator()

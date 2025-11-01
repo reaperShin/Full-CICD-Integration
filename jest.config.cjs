@@ -1,4 +1,5 @@
-export default {
+// jest.config.cjs
+module.exports = {
   testEnvironment: "jsdom",
   transform: {
     "^.+\\.(ts|tsx)$": ["ts-jest", { tsconfig: "tsconfig.json" }],
@@ -7,7 +8,7 @@ export default {
     "^@/(.*)$": "<rootDir>/$1",
     "\\.(css|less|scss|sass)$": "identity-obj-proxy",
   },
-  setupFilesAfterEnv: ["<rootDir>/jest.setup.js"],
+  setupFilesAfterEnv: ["<rootDir>/jest.setup.cjs"],
   testPathIgnorePatterns: ["/node_modules/", "/.next/"],
   transformIgnorePatterns: [
     "/node_modules/(?!(next|@?react|@testing-library)/)",

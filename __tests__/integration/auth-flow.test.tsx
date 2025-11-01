@@ -1,62 +1,110 @@
 /**
- * @fileoverview Full authentication flow integration test
- * Works with React 18, Next.js 14+, and Testing Library
+ * __tests__/auth.integration.test.tsx
+ *
+ * Simplified mocks (TypeScript-friendly) for integration tests.
  */
 
-import { render, screen, waitFor, act } from "../setup/test-utils"
+import { render, screen, waitFor } from "../setup/test-utils"
 import userEvent from "@testing-library/user-event"
 import Home from "@/app/page"
 import { jest } from "@jest/globals"
 import { waitForLoadingToFinish } from "../setup/test-utils"
 
-// ✅ Mock localStorage globally
+/* -------------------------------------------------------------------------- */
+/* 🎯 Console suppression (harmless jsdom/React warnings)                     */
+/* -------------------------------------------------------------------------- */
+
+beforeAll(() => {
+  const originalError = console.error
+  console.error = (...args: unknown[]) => {
+    const maybeMsg = args[0]
+    if (typeof maybeMsg === "string") {
+      if (maybeMsg.includes("InvalidCharacterError")) return
+      if (maybeMsg.includes("Attempted to synchronously unmount")) return
+    }
+    ;(originalError as any)(...args)
+  }
+})
+
+/* -------------------------------------------------------------------------- */
+/* 🧩 Simple mocks: localStorage (in-memory) + fetch (typed jest.fn)          */
+/* -------------------------------------------------------------------------- */
+
+// in-memory store
+const _store: Record<string, string> = {}
+
+// localStorage-like object with jest.fn wrappers
 const localStorageMock = {
-  getItem: jest.fn(),
-  setItem: jest.fn(),
-  removeItem: jest.fn(),
-  clear: jest.fn(),
+  getItem: jest.fn((key: string) =>
+    Object.prototype.hasOwnProperty.call(_store, key) ? _store[key] : null
+  ),
+  setItem: jest.fn((key: string, value: string) => {
+    _store[key] = String(value)
+  }),
+  removeItem: jest.fn((key: string) => {
+    delete _store[key]
+  }),
+  clear: jest.fn(() => {
+    for (const k of Object.keys(_store)) delete _store[k]
+  }),
 }
+
+// attach to window
 Object.defineProperty(window, "localStorage", {
   value: localStorageMock,
   writable: true,
 })
 
-// ✅ Correct Type: mockFetch is a function returning a Promise<Response-like>
-const mockFetch = jest.fn<() => Promise<Partial<Response>>>()
-global.fetch = mockFetch as unknown as typeof fetch
+// ---- typed fetch mock ----
+// explicitly type the mock so mockResolvedValueOnce accepts arbitrary resolved values
+const mockFetch = jest.fn() as jest.MockedFunction<
+  (input: RequestInfo, init?: RequestInit) => Promise<any>
+>
 
+// attach to global.fetch (cast to satisfy TS)
+;(global as unknown as { fetch: typeof mockFetch }).fetch = mockFetch
 
-describe("Authentication Flow Integration", () => {
+/* -------------------------------------------------------------------------- */
+/* 🧪 Tests                                                                    */
+/* -------------------------------------------------------------------------- */
+
+describe("Authentication Flow Integration (simple mocks)", () => {
   beforeEach(() => {
     jest.clearAllMocks()
-    localStorageMock.getItem.mockReturnValue(null)
+    // clear in-memory store
+    for (const k of Object.keys(_store)) delete _store[k]
+    // ensure getItem returns null by default
+    localStorageMock.getItem.mockImplementation((key: string) =>
+      Object.prototype.hasOwnProperty.call(_store, key) ? _store[key] : null
+    )
   })
 
   it("completes full login flow", async () => {
     const user = userEvent.setup()
     const mockUserData = { id: 1, email: "test@example.com", name: "Test User" }
 
-    // ✅ Mock API response for login
-    mockFetch.mockResolvedValueOnce({
-      ok: true,
-      status: 200,
-      json: async () => ({ user: mockUserData }),
-    })
+    // initial auth check unauthorized, then login success
+    mockFetch
+      .mockResolvedValueOnce({ ok: false, status: 401 }) // initial auth check
+      .mockResolvedValueOnce({
+        ok: true,
+        status: 200,
+        json: async () => ({ user: mockUserData }),
+      })
 
     render(<Home />)
     await waitForLoadingToFinish()
 
-    // ✅ Should show login form initially
     expect(await screen.findByText(/welcome back/i)).toBeInTheDocument()
 
-    // ✅ Simulate login
-    await act(async () => {
-      await user.type(screen.getByLabelText(/email address/i), "test@example.com")
-      await user.type(screen.getByLabelText(/password/i), "password123")
-      await user.click(screen.getByRole("button", { name: /sign in/i }))
-    })
+    await user.type(screen.getByLabelText(/email address/i), "test@example.com")
+    await user.type(
+      screen.getByLabelText(/password/i, { selector: "input" }),
+      "password123"
+    )
+    await user.click(screen.getByRole("button", { name: /sign in/i }))
 
-    // ✅ Should store user in localStorage after successful login
+    // verify localStorage.setItem was called with the user object
     await waitFor(() => {
       expect(localStorageMock.setItem).toHaveBeenCalledWith(
         "user",
@@ -67,15 +115,21 @@ describe("Authentication Flow Integration", () => {
 
   it("persists user session on page reload", async () => {
     const mockUserData = { id: 1, email: "test@example.com", name: "Test User" }
-    localStorageMock.getItem.mockReturnValue(JSON.stringify(mockUserData))
+
+    // simulate existing session in store
+    localStorageMock.setItem("user", JSON.stringify(mockUserData))
+
+    mockFetch.mockResolvedValueOnce({
+      ok: true,
+      status: 200,
+      json: async () => ({ user: mockUserData }),
+    })
 
     render(<Home />)
     await waitForLoadingToFinish()
 
-    // ✅ Should check for persisted session
     expect(localStorageMock.getItem).toHaveBeenCalledWith("user")
 
-    // ✅ Should display dashboard UI (if implemented)
     await waitFor(() => {
       expect(screen.getByText(/dashboard/i)).toBeInTheDocument()
     })
@@ -85,12 +139,18 @@ describe("Authentication Flow Integration", () => {
     const user = userEvent.setup()
     const mockUserData = { id: 1, email: "test@example.com", name: "Test User" }
 
-    localStorageMock.getItem.mockReturnValue(JSON.stringify(mockUserData))
+    // seed session
+    localStorageMock.setItem("user", JSON.stringify(mockUserData))
+
+    mockFetch.mockResolvedValueOnce({
+      ok: true,
+      status: 200,
+      json: async () => ({ user: mockUserData }),
+    })
 
     render(<Home />)
     await waitForLoadingToFinish()
 
-    // ✅ Find logout button (supports multiple naming options)
     const logoutButton =
       screen.queryByRole("button", { name: /logout/i }) ||
       screen.queryByRole("button", { name: /sign out/i }) ||
@@ -100,9 +160,7 @@ describe("Authentication Flow Integration", () => {
     expect(logoutButton).toBeTruthy()
 
     if (logoutButton) {
-      await act(async () => {
-        await user.click(logoutButton)
-      })
+      await user.click(logoutButton)
 
       await waitFor(() => {
         expect(localStorageMock.removeItem).toHaveBeenCalledWith("user")
