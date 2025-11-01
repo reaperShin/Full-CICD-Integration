@@ -34,35 +34,6 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
-
-  Library:
-    name: Test Library
-    needs: [TestBuild]
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout Repository
-        uses: actions/checkout@v3
-
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: 20
-
-      - name: Cache Node modules
-        uses: actions/cache@v3
-        with:
-          path: ~/.npm
-          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
-          restore-keys: |
-            ${{ runner.os }}-node-
-
-      - name: Install dependencies
-        run: npm ci
-
-      - name: Run only utilities
-        run: npm test -- __tests__/lib/utils.test.ts
-
-
   Components:
     name: Test Components
     needs: [TestBuild]
@@ -92,7 +63,7 @@ jobs:
 
   API:
     name: Tests API
-    needs: [TestBuild]
+    needs: [Components]
     runs-on: ubuntu-latest
     steps:
       - name: Checkout Repository
@@ -117,9 +88,118 @@ jobs:
       - name: Run only login auth test
         run: npm test -- __tests__/api/auth/login.test.ts
 
+  Library1:
+    name: Test Library/Utilities
+    needs: [API]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v3
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Cache Node modules
+        uses: actions/cache@v3
+        with:
+          path: ~/.npm
+          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-node-
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Run only utilities
+        run: npm test -- __tests__/lib/utils.test.ts
+
+  Library2:
+    name: Tests Library/Direct Scoring Service
+    needs: [API]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v3
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Cache Node modules
+        uses: actions/cache@v3
+        with:
+          path: ~/.npm
+          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-node-
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Run only login auth test
+        run: npm test -- __tests__/lib/direct-scoring-service.test.ts
+
+  Library3:
+    name: Tests Library/Real Scoring Service
+    needs: [API]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v3
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Cache Node modules
+        uses: actions/cache@v3
+        with:
+          path: ~/.npm
+          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-node-
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Run only login auth test
+        run: npm test -- __tests__/lib/real-scoring-service.test.ts
+
+
+  Library4:
+    name: Tests Library/Skill Matcher 
+    needs: [API]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v3
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Cache Node modules
+        uses: actions/cache@v3
+        with:
+          path: ~/.npm
+          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-node-
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Run only login auth test
+        run: npm test -- __tests__/lib/skill-matcher.test.ts
+
   Coverage:
     name: Upload coverage report
-    needs: [TestBuild, API, Components, Library]
+    needs: [TestBuild, API, Components, Library1]
     runs-on: ubuntu-latest
     steps:
       - name: Checkout Repository
