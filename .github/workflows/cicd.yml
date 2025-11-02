@@ -63,7 +63,7 @@ jobs:
 
   API:
     name: Tests API
-    needs: [Components]
+    needs: [TestBuild]
     runs-on: ubuntu-latest
     steps:
       - name: Checkout Repository
@@ -90,7 +90,7 @@ jobs:
 
   Library1:
     name: Test Library/Utilities
-    needs: [API]
+    needs: [TestBuild]
     runs-on: ubuntu-latest
     steps:
       - name: Checkout Repository
@@ -117,7 +117,7 @@ jobs:
 
   Library2:
     name: Tests Library/Direct Scoring Service
-    needs: [API]
+    needs: [TestBuild]
     runs-on: ubuntu-latest
     steps:
       - name: Checkout Repository
@@ -144,7 +144,7 @@ jobs:
 
   Library3:
     name: Tests Library/Real Scoring Service
-    needs: [API]
+    needs: [TestBuild]
     runs-on: ubuntu-latest
     steps:
       - name: Checkout Repository
@@ -172,7 +172,7 @@ jobs:
 
   Library4:
     name: Tests Library/Skill Matcher 
-    needs: [API]
+    needs: [TestBuild]
     runs-on: ubuntu-latest
     steps:
       - name: Checkout Repository
@@ -199,7 +199,7 @@ jobs:
 
   Coverage:
     name: Upload coverage report
-    needs: [TestBuild, API, Components, Library1]
+    needs: [TestBuild, API, Components, Library1, Library2, Library3, Library4]
     runs-on: ubuntu-latest
     steps:
       - name: Checkout Repository
