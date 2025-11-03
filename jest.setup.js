@@ -1,6 +1,10 @@
 // Add Testing Library matchers
 require("@testing-library/jest-dom");
 
+// setupTests.ts
+process.env.NEXT_PUBLIC_SUPABASE_URL = "https://mock-supabase-url.io"
+process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY = "mock-anon-key"
+
 // Mock Next.js navigation (App Router)
 jest.mock("next/navigation", () => ({
   useRouter() {
