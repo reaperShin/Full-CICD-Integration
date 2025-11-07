@@ -66,7 +66,7 @@ jobs:
 
   algorithms-real-scoring:
     name: Test Real Scoring Service
-    needs: [algorithms-direct-scoring]
+    needs: [TestBuild]
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
@@ -84,7 +84,7 @@ jobs:
 
   algorithms-skill-matcher:
     name: Test Skill Matcher
-    needs: [algorithms-real-scoring]
+    needs: [TestBuild]
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
@@ -105,7 +105,7 @@ jobs:
   # =========================
   auth-login:
     name: Test Login
-    needs: [algorithms-skill-matcher]
+    needs: [algorithms-skill-matcher, algorithms-direct-scoring, algorithms-real-scoring]
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
@@ -126,7 +126,7 @@ jobs:
   # =========================
   components-loginform:
     name: Test Login Form Component
-    needs: [auth-login]
+    needs: [algorithms-skill-matcher, algorithms-direct-scoring, algorithms-real-scoring]
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
@@ -147,7 +147,7 @@ jobs:
   # =========================
   integration-authflow:
     name: Test Auth Flow Integration
-    needs: [components-loginform]
+    needs: [algorithms-skill-matcher, algorithms-direct-scoring, algorithms-real-scoring]
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
@@ -168,7 +168,7 @@ jobs:
   # =========================
   communication-email-templates:
     name: Test Email Templates
-    needs: [integration-authflow]
+    needs: [integration-authflow, auth-login, components-loginform]
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
@@ -207,7 +207,7 @@ jobs:
 
   data-processing-resume:
     name: Test Resume Parser
-    needs: [data-processing-duplicate]
+    needs: [communication-email-templates]
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
@@ -228,7 +228,7 @@ jobs:
   # =========================
   database-storage:
     name: Test Storage
-    needs: [data-processing-resume]
+    needs: [data-processing-resume, data-processing-duplicate]
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
