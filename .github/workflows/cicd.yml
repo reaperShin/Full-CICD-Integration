@@ -105,7 +105,7 @@ jobs:
   # =========================
   auth-login:
     name: Test Login
-    needs: [algorithms-skill-matcher, algorithms-direct-scoring, algorithms-real-scoring]
+    needs: [TestBuild]
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
@@ -126,7 +126,7 @@ jobs:
   # =========================
   components-loginform:
     name: Test Login Form Component
-    needs: [algorithms-skill-matcher, algorithms-direct-scoring, algorithms-real-scoring]
+    needs: [TestBuild]
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
@@ -147,7 +147,7 @@ jobs:
   # =========================
   integration-authflow:
     name: Test Auth Flow Integration
-    needs: [algorithms-skill-matcher, algorithms-direct-scoring, algorithms-real-scoring]
+    needs: [TestBuild]
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
@@ -168,7 +168,7 @@ jobs:
   # =========================
   communication-email-templates:
     name: Test Email Templates
-    needs: [integration-authflow, auth-login, components-loginform]
+    needs: [TestBuild]
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
@@ -189,7 +189,7 @@ jobs:
   # =========================
   data-processing-duplicate:
     name: Test Duplicate Detection
-    needs: [communication-email-templates]
+    needs: [TestBuild]
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
@@ -207,7 +207,7 @@ jobs:
 
   data-processing-resume:
     name: Test Resume Parser
-    needs: [communication-email-templates]
+    needs: [TestBuild]
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
@@ -228,7 +228,7 @@ jobs:
   # =========================
   database-storage:
     name: Test Storage
-    needs: [data-processing-resume, data-processing-duplicate]
+    needs: [TestBuild]
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
@@ -249,7 +249,7 @@ jobs:
   # =========================
   realtime-connection:
     name: Test Connection Manager
-    needs: [database-storage]
+    needs: [TestBuild]
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
@@ -267,7 +267,7 @@ jobs:
 
   utilities:
     name: Test Utilities
-    needs: [realtime-connection]
+    needs: [TestBuild]
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
