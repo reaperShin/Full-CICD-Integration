@@ -140,7 +140,7 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-node-
       - run: npm ci
-      - run: npm test -- __tests__/components/LoginForm.test.tsx
+      - run: npm test -- __tests__/auth/components/LoginForm.test.tsx
 
   # =========================
   # 🔗 Integration Tests
@@ -161,7 +161,7 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-node-
       - run: npm ci
-      - run: npm test -- __tests__/integration/auth-flow.test.tsx
+      - run: npm test -- __tests__/auth/integration/auth-flow.test.tsx
 
   # =========================
   # ✉️ Communication Tests
