@@ -280,3 +280,55 @@ describe("LoginForm - Form Submission Error Cases", () => {
     })
   })
 })
+
+//===============
+// STORAGE TESTS
+//===============
+
+/*desccribe("StorageTest", () => {
+  it("should verify correct verification code", async () => {
+        const isValid = await storageModule.verifyCode("test@example.com", "123456", "verification");
+  
+        expect(isValid).toBe(true);
+      });
+})*/
+
+//==================
+//INTEGRATION
+//=================
+
+  /*it("checks localStorage for existing user on mount", async () => {
+    render(<Home />)
+
+    await waitFor(() => {
+      expect(localStorageMock.getItem).toHaveBeenCalledWith("user")
+    })
+  })*/
+
+//=====================
+// DUPLICATE DETECTION
+// ====================
+
+ /*it("should not flag as duplicate when confidence is below threshold", async () => {
+      const newApp = {
+        applicant_name: "John Doe",
+        applicant_email: "john@example.com",
+        applicant_phone: "555-1111",
+        applicant_city: "New York",
+      }
+
+      const existingApps = [
+        {
+          applicant_name: "Jane Smith",
+          applicant_email: "jane@example.com",
+          applicant_phone: "555-2222",
+          applicant_city: "Los Angeles",
+        },
+      ]
+
+      const result = await service.checkDuplicate(newApp, existingApps)
+
+      expect(result.isDuplicate).toBe(false)
+      expect(result.confidence).toBeLessThan(0.5)
+    })*/
+

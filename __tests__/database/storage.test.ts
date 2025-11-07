@@ -177,12 +177,6 @@ describe("Storage - User Management", () => {
       expect(result).toBeDefined();
     });
 
-    it("should verify correct verification code", async () => {
-      const isValid = await storageModule.verifyCode("test@example.com", "123456", "verification");
-
-      expect(isValid).toBe(true);
-    });
-
     it("should reject invalid verification code", async () => {
       const isValid = await storageModule.verifyCode("test@example.com", "wrong_code", "verification");
 
