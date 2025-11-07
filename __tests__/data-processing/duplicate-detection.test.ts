@@ -127,6 +127,7 @@ describe("DuplicateDetectionService", () => {
   })
 
   describe("checkDuplicate - Wrong Input Tests", () => {
+
     it("should handle missing optional fields gracefully", async () => {
       const newApp = {
         applicant_name: "John Doe",
