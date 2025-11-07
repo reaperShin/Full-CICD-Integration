@@ -53,14 +53,6 @@ describe("Full Authentication Flow - Success Cases", () => {
     })
   })
 
-  /*it("checks localStorage for existing user on mount", async () => {
-    render(<Home />)
-
-    await waitFor(() => {
-      expect(localStorageMock.getItem).toHaveBeenCalledWith("user")
-    })
-  })*/
-
   it("persists user session to localStorage", () => {
     const mockUserData = { id: "1", email: "test@example.com", name: "Test User" }
 
