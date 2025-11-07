@@ -8,7 +8,11 @@ export default {
     "\\.(css|less|scss|sass)$": "identity-obj-proxy",
   },
   setupFilesAfterEnv: ["<rootDir>/jest.setup.js"],
-  testPathIgnorePatterns: ["/node_modules/", "/.next/"],
+  testPathIgnorePatterns: [
+    "/node_modules/",
+    "/.next/",
+    "/__tests__/setup/",
+  ],
   transformIgnorePatterns: [
     "/node_modules/(?!(next|@?react|@testing-library)/)",
   ],
