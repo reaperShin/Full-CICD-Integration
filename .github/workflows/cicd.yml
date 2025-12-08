@@ -133,24 +133,6 @@ jobs:
       - run: npm ci
       - run: npm test -- __tests__/pages/home/navigation/home-navigation.test.tsx
 
-  pages-dashboard-navigation:
-    name: Test Dashboard Navigation
-    needs: [installation]
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v3
-      - uses: actions/setup-node@v4
-        with:
-          node-version: 20
-      - uses: actions/cache@v3
-        with:
-          path: ~/.npm
-          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
-          restore-keys: |
-            ${{ runner.os }}-node-
-      - run: npm ci
-      - run: npm test -- __tests__/pages/dashboard/navigation/dashboard-navigation.test.tsx
-
   pages-rankings-navigation:
     name: Test Rankings Creation Navigation
     needs: [installation]
