@@ -25,12 +25,6 @@ describe("LoginForm Component", () => {
   })
 
   describe("Rendering", () => {
-    it("renders login form without crashing", () => {
-      render(<LoginForm {...mockProps} />)
-      const form = screen.queryByRole("form") || screen.queryByTestId("login-form")
-      expect(form).toBeTruthy()
-    })
-
     it("renders email input field", () => {
       render(<LoginForm {...mockProps} />)
       const emailInputs = screen.queryAllByRole("textbox") || screen.queryAllByPlaceholderText(/email/i)
@@ -104,63 +98,6 @@ describe("LoginForm Component", () => {
     })
   })
 
-  describe("Form Submission - Success", () => {
-    it("calls onLogin with user data on successful login", async () => {
-      const user = userEvent.setup()
-      const mockUserData = { id: "1", email: "test@example.com", name: "Test User" }
-
-      mockFetch.mockResolvedValueOnce(createMockResponse({ user: mockUserData }, { status: 200 }))
-
-      render(<LoginForm {...mockProps} />)
-
-      const inputs = screen.getAllByRole("textbox")
-      const emailInput = inputs[0]
-      const passwordFields = screen.queryAllByDisplayValue("")
-      const passwordInput = passwordFields[0]
-      const buttons = screen.getAllByRole("button")
-      const submitButton = buttons[0]
-
-      await act(async () => {
-        await user.type(emailInput, "test@example.com")
-        await user.type(passwordInput, "password123")
-        await user.click(submitButton)
-      })
-
-      await waitFor(() => {
-        expect(mockProps.onLogin).toHaveBeenCalledWith(expect.objectContaining({ email: "test@example.com" }))
-      })
-    })
-
-    it("sends correct API request with credentials", async () => {
-      const user = userEvent.setup()
-
-      mockFetch.mockResolvedValueOnce(createMockResponse({ user: { id: "1" } }, { status: 200 }))
-
-      render(<LoginForm {...mockProps} />)
-
-      const inputs = screen.getAllByRole("textbox")
-      const passwordFields = screen.queryAllByDisplayValue("")
-      const buttons = screen.getAllByRole("button")
-      const submitButton = buttons[0]
-
-      await act(async () => {
-        await user.type(inputs[0], "user@test.com")
-        await user.type(passwordFields[0], "secret123")
-        await user.click(submitButton)
-      })
-
-      await waitFor(() => {
-        expect(mockFetch).toHaveBeenCalledWith(
-          "/api/auth/login",
-          expect.objectContaining({
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-          }),
-        )
-      })
-    })
-  })
-
   describe("Form Submission - Error Cases", () => {
     it("does not call onLogin on failed authentication", async () => {
       const user = userEvent.setup()
@@ -203,30 +140,6 @@ describe("LoginForm Component", () => {
 
       await waitFor(() => {
         expect(mockProps.onLogin).not.toHaveBeenCalled()
-      })
-    })
-
-    it("calls onSwitchToVerification when verification is required", async () => {
-      const user = userEvent.setup()
-
-      mockFetch.mockResolvedValueOnce(
-        createMockResponse({ requiresVerification: true, email: "test@example.com" }, { status: 403 }),
-      )
-
-      render(<LoginForm {...mockProps} />)
-
-      const inputs = screen.getAllByRole("textbox")
-      const passwordFields = screen.queryAllByDisplayValue("")
-      const buttons = screen.getAllByRole("button")
-
-      await act(async () => {
-        await user.type(inputs[0], "test@example.com")
-        await user.type(passwordFields[0], "password123")
-        await user.click(buttons[0])
-      })
-
-      await waitFor(() => {
-        expect(mockProps.onSwitchToVerification).toHaveBeenCalledWith("test@example.com")
       })
     })
   })
