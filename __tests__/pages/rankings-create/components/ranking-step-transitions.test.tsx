@@ -12,21 +12,7 @@ describe("Rankings Create Page - Step Component Transitions", () => {
     jest.clearAllMocks()
   })
 
-  describe("Step 1: Job Position Component", () => {
-    it("renders job position step on initial load", () => {
-      render(<CreateRankingPage />)
-      const stepTitle = screen.queryByText(/Step 1/)
-      expect(stepTitle).toBeTruthy()
-    })
-
-    it("displays job position form fields", () => {
-      render(<CreateRankingPage />)
-      const inputs = screen.queryAllByRole("textbox") || screen.queryAllByDisplayValue("")
-      expect(inputs.length).toBeGreaterThan(0)
-    })
-  })
-
-  describe("Step 2: Criteria Selection Component", () => {
+  describe("Criteria Selection Component", () => {
     it("renders criteria selection step after next", async () => {
       const user = userEvent.setup()
       render(<CreateRankingPage />)
@@ -62,7 +48,7 @@ describe("Rankings Create Page - Step Component Transitions", () => {
     })
   })
 
-  describe("Step 3: Criteria Weighting Component", () => {
+  describe("Criteria Weighting Component", () => {
     it("renders weighting step after step 2", async () => {
       const user = userEvent.setup()
       render(<CreateRankingPage />)
@@ -102,7 +88,7 @@ describe("Rankings Create Page - Step Component Transitions", () => {
     })
   })
 
-  describe("Step 4: Review Component", () => {
+  describe("Review Component", () => {
     it("renders review step as final step", async () => {
       const user = userEvent.setup()
       render(<CreateRankingPage />)

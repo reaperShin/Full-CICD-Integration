@@ -1,4 +1,6 @@
 import { jest, beforeEach, afterEach } from "@jest/globals"
+import "@testing-library/jest-dom"
+
 
 // Mock IntersectionObserver
 global.IntersectionObserver = jest.fn().mockImplementation(() => ({

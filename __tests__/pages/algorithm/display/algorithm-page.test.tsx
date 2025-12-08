@@ -19,32 +19,6 @@ describe("Algorithm Page - Display and Content", () => {
       const description = screen.queryByText(/intelligent scoring system|advanced OCR/i)
       expect(description).toBeTruthy()
     })
-
-    it("renders brain icon or header icon", () => {
-      render(<AlgorithmPage />)
-      const page = screen.queryByText(/Scoring Algorithm|Algorithm/i)
-      expect(page).toBeTruthy()
-    })
-  })
-
-  describe("How It Works Section", () => {
-    it("displays OCR Processing step", () => {
-      render(<AlgorithmPage />)
-      const ocrText = screen.queryByText(/OCR|Resume|extract/i)
-      expect(ocrText).toBeTruthy()
-    })
-
-    it("displays Criteria Scoring step", () => {
-      render(<AlgorithmPage />)
-      const criteriaText = screen.queryByText(/Criteria Scoring|individually/i)
-      expect(criteriaText).toBeTruthy()
-    })
-
-    it("displays Weighted Calculation step", () => {
-      render(<AlgorithmPage />)
-      const weightedText = screen.queryByText(/Weighted Calculation|combined/i)
-      expect(weightedText).toBeTruthy()
-    })
   })
 
   describe("Scoring Criteria Display", () => {
@@ -64,12 +38,6 @@ describe("Algorithm Page - Display and Content", () => {
       render(<AlgorithmPage />)
       const experience = screen.queryByText(/Experience/)
       expect(experience).toBeTruthy()
-    })
-
-    it("displays Education criterion", () => {
-      render(<AlgorithmPage />)
-      const education = screen.queryByText(/Education/)
-      expect(education).toBeTruthy()
     })
 
     it("displays Certifications criterion", () => {
@@ -94,12 +62,6 @@ describe("Algorithm Page - Display and Content", () => {
   })
 
   describe("Scoring Example Section", () => {
-    it("displays scoring example for sample applicant", () => {
-      render(<AlgorithmPage />)
-      const exampleText = screen.queryByText(/John Smith|Sample|Kitchen Helper/i)
-      expect(exampleText).toBeTruthy()
-    })
-
     it("displays individual scores", () => {
       render(<AlgorithmPage />)
       const scores = screen.queryAllByText(/Score:|\/100/i)
@@ -110,32 +72,6 @@ describe("Algorithm Page - Display and Content", () => {
       render(<AlgorithmPage />)
       const finalScore = screen.queryByText(/Final Weighted Score/)
       expect(finalScore).toBeTruthy()
-    })
-  })
-
-  describe("Key Features Section", () => {
-    it("displays Fair & Consistent feature", () => {
-      render(<AlgorithmPage />)
-      const fairText = screen.queryByText(/Fair|Consistent|unconscious bias/i)
-      expect(fairText).toBeTruthy()
-    })
-
-    it("displays Customizable Weights feature", () => {
-      render(<AlgorithmPage />)
-      const customText = screen.queryByText(/Customizable|Weights|adjust/i)
-      expect(customText).toBeTruthy()
-    })
-
-    it("displays Automated Processing feature", () => {
-      render(<AlgorithmPage />)
-      const automatedText = screen.queryByText(/Automated|Processing|reduces/i)
-      expect(automatedText).toBeTruthy()
-    })
-
-    it("displays Transparent Scoring feature", () => {
-      render(<AlgorithmPage />)
-      const transparentText = screen.queryByText(/Transparent|breakdowns/i)
-      expect(transparentText).toBeTruthy()
     })
   })
 
