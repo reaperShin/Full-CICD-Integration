@@ -2,7 +2,7 @@ import { describe, it, expect, beforeEach, jest, afterEach } from "@jest/globals
 import { render, screen, waitFor, act } from "@testing-library/react"
 import userEvent from "@testing-library/user-event"
 import Home from "@/app/page"
-import { createMockResponse } from "../../setup/test-utils"
+import { createMockResponse } from "@/__tests__/setup/test-utils"
 
 const mockFetch = jest.fn() as jest.MockedFunction<typeof fetch>
 global.fetch = mockFetch as any

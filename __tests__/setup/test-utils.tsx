@@ -1,27 +1,41 @@
-import React from "react"
+import React, { type ReactElement } from "react"
 import { render as rtlRender, type RenderOptions, type RenderResult } from "@testing-library/react"
-import type { ReactElement } from "react"
 
+// 1. PROVIDER WRAPPER
+// Add your Context Providers here (Theme, Redux, Router, etc.)
 const AllTheProviders = ({ children }: { children: React.ReactNode }) => {
   return React.createElement(React.Fragment, null, children)
 }
 
-const customRender = (ui: ReactElement, options?: Omit<RenderOptions, "wrapper">): RenderResult =>
-  rtlRender(ui, { wrapper: AllTheProviders, ...options })
+// 2. CUSTOM RENDERER
+const customRender = (
+  ui: ReactElement,
+  options?: Omit<RenderOptions, "wrapper">
+): RenderResult => {
+  return rtlRender(ui, { wrapper: AllTheProviders, ...options })
+}
 
-// Re-export everything from RTL
+// 3. RE-EXPORTS
+// Re-export everything from RTL so you can import from this file directly
 export * from "@testing-library/react"
 export { customRender as render }
 
-// Utility to wait for loading states
+// 4. UTILITIES
+
+// Helper to wait for loading states (Using 100ms as the default)
 export const waitForLoadingToFinish = async (): Promise<void> => {
   return new Promise((resolve) => {
     setTimeout(resolve, 100)
   })
 }
 
-export const createMockResponse = (data: unknown, options: { status?: number; ok?: boolean } = {}): Response => {
+// Mock Response helper for fetch/API testing
+export const createMockResponse = (
+  data: unknown,
+  options: { status?: number; ok?: boolean } = {}
+): Response => {
   const status = options.status ?? 200
+  
   return {
     ok: options.ok ?? status < 400,
     status,
