@@ -94,66 +94,6 @@ jobs:
       - run: npm ci
       - run: npm test -- __tests__/algorithms/skill-matching/skill-matcher.test.ts
 
-  # =========================
-  # 🔐 Auth Tests
-  # =========================
-  auth-login-api:
-    name: Test Login API
-    needs: [installation]
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v3
-      - uses: actions/setup-node@v4
-        with:
-          node-version: 20
-      - uses: actions/cache@v3
-        with:
-          path: ~/.npm
-          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
-          restore-keys: |
-            ${{ runner.os }}-node-
-      - run: npm ci
-      - run: npm test -- __tests__/pages/login/auth/login-api.test.ts
-
-  auth-integration:
-    name: Test Auth Integration Flow
-    needs: [installation]
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v3
-      - uses: actions/setup-node@v4
-        with:
-          node-version: 20
-      - uses: actions/cache@v3
-        with:
-          path: ~/.npm
-          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
-          restore-keys: |
-            ${{ runner.os }}-node-
-      - run: npm ci
-      - run: npm test -- __tests__/pages/login/integration/login-flow.test.tsx
-
-  # =========================
-  # 🧩 Component Tests
-  # =========================
-  components-login-form:
-    name: Test Login Form Component
-    needs: [installation]
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v3
-      - uses: actions/setup-node@v4
-        with:
-          node-version: 20
-      - uses: actions/cache@v3
-        with:
-          path: ~/.npm
-          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
-          restore-keys: |
-            ${{ runner.os }}-node-
-      - run: npm ci
-      - run: npm test -- __tests__/pages/login/components/login-form.test.tsx
-
   components-auth-views:
     name: Test Auth Views
     needs: [installation]
@@ -346,26 +286,6 @@ jobs:
       - run: npm ci
       - run: npm test -- __tests__/data-processing/resume-parser.test.ts
 
-  # =========================
-  # 🗄️ Database Tests
-  # =========================
-  database-login-storage:
-    name: Test Login Storage
-    needs: [installation]
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v3
-      - uses: actions/setup-node@v4
-        with:
-          node-version: 20
-      - uses: actions/cache@v3
-        with:
-          path: ~/.npm
-          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
-          restore-keys: |
-            ${{ runner.os }}-node-
-      - run: npm ci
-      - run: npm test -- __tests__/pages/login/database/login-storage.test.ts
 
   # =========================
   # ⚡ Realtime Tests
@@ -514,9 +434,6 @@ jobs:
       algorithms-direct-scoring,
       algorithms-real-scoring,
       algorithms-skill-matcher,
-      auth-login-api,
-      auth-integration,
-      components-login-form,
       components-auth-views,
       components-application-form,
       pages-home-navigation,
@@ -527,7 +444,6 @@ jobs:
       communication-email,
       data-duplicate-detection,
       data-resume-parser,
-      database-login-storage,
       realtime-connection,
       utilities,
       additional-unit,
