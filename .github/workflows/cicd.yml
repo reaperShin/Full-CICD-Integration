@@ -379,7 +379,6 @@ jobs:
       algorithms-skill-matcher,
       components-auth-views,
       pages-home-navigation,
-      pages-dashboard-navigation,
       pages-rankings-navigation,
       pages-video-navigation,
       communication-email,
