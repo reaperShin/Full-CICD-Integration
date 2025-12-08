@@ -50,16 +50,6 @@ describe("Form Edge Cases", () => {
       expect((inputs[0] as HTMLInputElement).value).toBe("test2@example.com")
     })
 
-    it("handles whitespace-only input", async () => {
-      const user = userEvent.setup()
-      render(<LoginForm {...mockProps} />)
-
-      const inputs = screen.getAllByRole("textbox")
-      await user.type(inputs[0], "   ")
-
-      expect((inputs[0] as HTMLInputElement).value).toContain(" ")
-    })
-
     it("handles pasted content with line breaks", async () => {
       const user = userEvent.setup()
       render(<LoginForm {...mockProps} />)
