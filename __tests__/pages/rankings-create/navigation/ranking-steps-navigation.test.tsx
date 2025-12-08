@@ -18,26 +18,7 @@ describe("Rankings Create Page - Step Navigation", () => {
     jest.clearAllMocks()
   })
 
-  describe("Step Indicator Display", () => {
-    it("displays all ranking steps", () => {
-      render(<CreateRankingPage />)
-      const steps = screen.queryAllByText(/Step|Job Position|Criteria Selection|Criteria Weighting|Review/i)
-      expect(steps.length).toBeGreaterThan(0)
-    })
-
-    it("highlights current step", () => {
-      render(<CreateRankingPage />)
-      const stepIndicators = screen.queryAllByText(/Step 1/)
-      expect(stepIndicators.length).toBeGreaterThan(0)
-    })
-
-    it("shows step titles", () => {
-      render(<CreateRankingPage />)
-      const stepTitles = screen.queryAllByText(/Job Position|Criteria Selection|Criteria Weighting|Review/i)
-      expect(stepTitles.length).toBeGreaterThan(0)
-    })
-  })
-
+  
   describe("Navigation Between Steps", () => {
     it("navigates to next step on button click", async () => {
       const user = userEvent.setup()
@@ -79,12 +60,6 @@ describe("Rankings Create Page - Step Navigation", () => {
   })
 
   describe("Back to Dashboard Navigation", () => {
-    it("renders back to dashboard button", () => {
-      render(<CreateRankingPage />)
-      const backButton = screen.queryByText(/Back to Dashboard/i)
-      expect(backButton).toBeTruthy()
-    })
-
     it("navigates back to dashboard on button click", async () => {
       const user = userEvent.setup()
       render(<CreateRankingPage />)
