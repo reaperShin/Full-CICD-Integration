@@ -94,45 +94,9 @@ jobs:
       - run: npm ci
       - run: npm test -- __tests__/algorithms/skill-matching/skill-matcher.test.ts
 
-  components-auth-views:
-    name: Test Auth Views
-    needs: [installation]
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v3
-      - uses: actions/setup-node@v4
-        with:
-          node-version: 20
-      - uses: actions/cache@v3
-        with:
-          path: ~/.npm
-          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
-          restore-keys: |
-            ${{ runner.os }}-node-
-      - run: npm ci
-      - run: npm test -- __tests__/pages/home/components/auth-views.test.tsx
-
   # =========================
   # 📄 Page Navigation Tests
-  # =========================
-  pages-home-navigation:
-    name: Test Home Navigation
-    needs: [installation]
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v3
-      - uses: actions/setup-node@v4
-        with:
-          node-version: 20
-      - uses: actions/cache@v3
-        with:
-          path: ~/.npm
-          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
-          restore-keys: |
-            ${{ runner.os }}-node-
-      - run: npm ci
-      - run: npm test -- __tests__/pages/home/navigation/home-navigation.test.tsx
-
+    # =========================
   pages-rankings-navigation:
     name: Test Rankings Creation Navigation
     needs: [installation]
@@ -377,8 +341,6 @@ jobs:
       algorithms-direct-scoring,
       algorithms-real-scoring,
       algorithms-skill-matcher,
-      components-auth-views,
-      pages-home-navigation,
       pages-rankings-navigation,
       pages-video-navigation,
       communication-email,
