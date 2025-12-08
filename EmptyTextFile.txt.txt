@@ -1,0 +1,37 @@
+==== REMOVING NODE MODULES AND REINSTALLING THEM ====
+# shall only be used when there is an error in version of react
+- rm -rf node_modules package-lock.json
+- npm install react@18.3.1 react-dom@18.3.1
+- npm install
+
+==== UPDATING VAUL ====
+# shall be used when you are not sure if may iba pang dependency na dinownload before tanggalin ung package json for ci to work for version 19 of react
+- npm info vaul versions
+- npm install vaul@latest
+
+==== JEST AND JEST ENVIRONMENT INSTALLATION
+# shall only be used when cloning the repo or downloading it into your local project. Jest is needed since this is usedfor mocks and running CI tests
+- npm install react@18 react-dom@18 next@14
+- npm install --save-dev jest ts-jest @types/jest @testing-library/react @testing-library/jest-dom @testing-library/user-event jest-environment-jsdom
+- npm install --save-dev eslint eslint-config-next
+- npx ts-jest config:init
+
+
+==== NOTES ====
+- if may error, double check mo mga inputs and mga contents nung mga files like packages, tsconfig, etc
+- check mo den version nung react kung compatible ba sa dependency ng jest
+- ung sa setup na test, support lang un so di na siya kasama sa cicd
+
+
+==== TEST COMMANDS =====
+# 1️⃣ Run api/auth/login.test.ts
+npm test -- __tests__/api/auth/login.test.ts
+
+# 2️⃣ Run components/LoginForm.test.tsx
+npm test -- __tests__/components/LoginForm.test.tsx
+
+# 3️⃣ Run integration/auth-flow.test.tsx
+npm test -- __tests__/integration/auth-flow.test.tsx
+
+# 4️⃣ Run lib/utils.test.ts
+npm test -- __tests__/lib/utils.test.ts

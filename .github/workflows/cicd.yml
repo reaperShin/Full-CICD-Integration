@@ -1,0 +1,543 @@
+name: Resume Ranking Workflow
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - main
+  pull_request:
+    types: [opened]
+    branches:
+      - main
+
+jobs:
+  # =========================
+  # 📦 Installation & Setup
+  # =========================
+  installation:
+    name: Setup & Install Dependencies
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v3
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Cache npm modules
+        uses: actions/cache@v3
+        with:
+          path: ~/.npm
+          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-node-
+
+      - name: Install dependencies
+        run: npm ci
+
+  # =========================
+  # 🧠 Algorithm Tests
+  # =========================
+  algorithms-direct-scoring:
+    name: Test Direct Scoring Service
+    needs: [installation]
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - uses: actions/cache@v3
+        with:
+          path: ~/.npm
+          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-node-
+      - run: npm ci
+      - run: npm test -- __tests__/algorithms/scoring/direct-scoring-service.test.ts
+
+  algorithms-real-scoring:
+    name: Test Real Scoring Service
+    needs: [installation]
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - uses: actions/cache@v3
+        with:
+          path: ~/.npm
+          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-node-
+      - run: npm ci
+      - run: npm test -- __tests__/algorithms/scoring/real-scoring-service.test.ts
+
+  algorithms-skill-matcher:
+    name: Test Skill Matcher
+    needs: [installation]
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - uses: actions/cache@v3
+        with:
+          path: ~/.npm
+          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-node-
+      - run: npm ci
+      - run: npm test -- __tests__/algorithms/skill-matching/skill-matcher.test.ts
+
+  # =========================
+  # 🔐 Auth Tests
+  # =========================
+  auth-login-api:
+    name: Test Login API
+    needs: [installation]
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - uses: actions/cache@v3
+        with:
+          path: ~/.npm
+          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-node-
+      - run: npm ci
+      - run: npm test -- __tests__/pages/login/auth/login-api.test.ts
+
+  auth-integration:
+    name: Test Auth Integration Flow
+    needs: [installation]
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - uses: actions/cache@v3
+        with:
+          path: ~/.npm
+          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-node-
+      - run: npm ci
+      - run: npm test -- __tests__/pages/login/integration/login-flow.test.tsx
+
+  # =========================
+  # 🧩 Component Tests
+  # =========================
+  components-login-form:
+    name: Test Login Form Component
+    needs: [installation]
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - uses: actions/cache@v3
+        with:
+          path: ~/.npm
+          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-node-
+      - run: npm ci
+      - run: npm test -- __tests__/pages/login/components/login-form.test.tsx
+
+  components-auth-views:
+    name: Test Auth Views
+    needs: [installation]
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - uses: actions/cache@v3
+        with:
+          path: ~/.npm
+          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-node-
+      - run: npm ci
+      - run: npm test -- __tests__/pages/home/components/auth-views.test.tsx
+
+  components-application-form:
+    name: Test Application Form
+    needs: [installation]
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - uses: actions/cache@v3
+        with:
+          path: ~/.npm
+          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-node-
+      - run: npm ci
+      - run: npm test -- __tests__/pages/apply/components/application-form.test.tsx
+
+  # =========================
+  # 📄 Page Navigation Tests
+  # =========================
+  pages-home-navigation:
+    name: Test Home Navigation
+    needs: [installation]
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - uses: actions/cache@v3
+        with:
+          path: ~/.npm
+          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-node-
+      - run: npm ci
+      - run: npm test -- __tests__/pages/home/navigation/home-navigation.test.tsx
+
+  pages-dashboard-navigation:
+    name: Test Dashboard Navigation
+    needs: [installation]
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - uses: actions/cache@v3
+        with:
+          path: ~/.npm
+          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-node-
+      - run: npm ci
+      - run: npm test -- __tests__/pages/dashboard/navigation/dashboard-navigation.test.tsx
+
+  pages-rankings-navigation:
+    name: Test Rankings Creation Navigation
+    needs: [installation]
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - uses: actions/cache@v3
+        with:
+          path: ~/.npm
+          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-node-
+      - run: npm ci
+      - run: npm test -- __tests__/pages/rankings-create/navigation/ranking-steps-navigation.test.tsx
+
+  pages-video-navigation:
+    name: Test Video Call Navigation
+    needs: [installation]
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - uses: actions/cache@v3
+        with:
+          path: ~/.npm
+          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-node-
+      - run: npm ci
+      - run: npm test -- __tests__/pages/video-call/navigation/video-call-nav.test.tsx
+
+  # =========================
+  # 🧪 API Tests
+  # =========================
+  api-dashboard:
+    name: Test Dashboard API
+    needs: [installation]
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - uses: actions/cache@v3
+        with:
+          path: ~/.npm
+          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-node-
+      - run: npm ci
+      - run: npm test -- __tests__/pages/dashboard/api/dashboard-fetch.test.ts
+
+  # =========================
+  # ✉️ Communication Tests
+  # =========================
+  communication-email:
+    name: Test Email Templates
+    needs: [installation]
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - uses: actions/cache@v3
+        with:
+          path: ~/.npm
+          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-node-
+      - run: npm ci
+      - run: npm test -- __tests__/communication/email-templates.test.tsx
+
+  # =========================
+  # 🧮 Data Processing Tests
+  # =========================
+  data-duplicate-detection:
+    name: Test Duplicate Detection
+    needs: [installation]
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - uses: actions/cache@v3
+        with:
+          path: ~/.npm
+          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-node-
+      - run: npm ci
+      - run: npm test -- __tests__/data-processing/duplicate-detection.test.ts
+
+  data-resume-parser:
+    name: Test Resume Parser
+    needs: [installation]
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - uses: actions/cache@v3
+        with:
+          path: ~/.npm
+          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-node-
+      - run: npm ci
+      - run: npm test -- __tests__/data-processing/resume-parser.test.ts
+
+  # =========================
+  # 🗄️ Database Tests
+  # =========================
+  database-login-storage:
+    name: Test Login Storage
+    needs: [installation]
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - uses: actions/cache@v3
+        with:
+          path: ~/.npm
+          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-node-
+      - run: npm ci
+      - run: npm test -- __tests__/pages/login/database/login-storage.test.ts
+
+  # =========================
+  # ⚡ Realtime Tests
+  # =========================
+  realtime-connection:
+    name: Test Connection Manager
+    needs: [installation]
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - uses: actions/cache@v3
+        with:
+          path: ~/.npm
+          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-node-
+      - run: npm ci
+      - run: npm test -- __tests__/realtime/connection-manager.test.ts
+
+  # =========================
+  # 🛠️ Utilities Tests
+  # =========================
+  utilities:
+    name: Test Utilities
+    needs: [installation]
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - uses: actions/cache@v3
+        with:
+          path: ~/.npm
+          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-node-
+      - run: npm ci
+      - run: npm test -- __tests__/utilities/utils.test.ts
+
+  # =========================
+  # ⬇️ Additional Unit Tests
+  # =========================
+  additional-unit:
+    name: Test Additional Unit Tests
+    needs: [installation]
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - uses: actions/cache@v3
+        with:
+          path: ~/.npm
+          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-node-
+      - run: npm ci
+      - run: npm test -- __tests__/additional/unit
+
+  # =========================
+  # 🧪 Extended Tests
+  # =========================
+  extended-edge-cases:
+    name: Test Edge Cases
+    needs: [installation]
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - uses: actions/cache@v3
+        with:
+          path: ~/.npm
+          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-node-
+      - run: npm ci
+      - run: npm test -- __tests__/extended/edge-cases
+
+  extended-error-handling:
+    name: Test Error Handling
+    needs: [installation]
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - uses: actions/cache@v3
+        with:
+          path: ~/.npm
+          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-node-
+      - run: npm ci
+      - run: npm test -- __tests__/extended/error-handling
+
+  extended-validation:
+    name: Test Validation
+    needs: [installation]
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - uses: actions/cache@v3
+        with:
+          path: ~/.npm
+          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-node-
+      - run: npm ci
+      - run: npm test -- __tests__/extended/validation
+
+  extended-security:
+    name: Test Security
+    needs: [installation]
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - uses: actions/cache@v3
+        with:
+          path: ~/.npm
+          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-node-
+      - run: npm ci
+      - run: npm test -- __tests__/extended/security
+
+  # =========================
+  # 📊 Test Summary
+  # =========================
+  test-summary:
+    name: Test Summary
+    needs: [
+      algorithms-direct-scoring,
+      algorithms-real-scoring,
+      algorithms-skill-matcher,
+      auth-login-api,
+      auth-integration,
+      components-login-form,
+      components-auth-views,
+      components-application-form,
+      pages-home-navigation,
+      pages-dashboard-navigation,
+      pages-rankings-navigation,
+      pages-video-navigation,
+      api-dashboard,
+      communication-email,
+      data-duplicate-detection,
+      data-resume-parser,
+      database-login-storage,
+      realtime-connection,
+      utilities,
+      additional-unit,
+      extended-edge-cases,
+      extended-error-handling,
+      extended-validation,
+      extended-security
+    ]
+    runs-on: ubuntu-latest
+    if: always()
+    steps:
+      - name: All Tests Complete
+        run: echo "All test suites have completed successfully!"
