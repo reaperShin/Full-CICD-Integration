@@ -398,8 +398,24 @@ jobs:
     needs: 
       # List all your test jobs here to ensure they pass first
       - algorithms-direct-scoring
-      # ... (all other test jobs)
+      - algorithms-real-scoring
+      - algorithms-skill-matcher
+      - pages-rankings-navigation
+      - pages-video-navigation
+      - communication-email
+      - data-duplicate-detection
+      - data-resume-parser
+      - realtime-connection
+      - utilities
+      - additional-unit
+      - extended-edge-cases
+      - extended-error-handling
+      - extended-validation
+      - extended-security
+      - API-Auth
+      - Auth-Components
       - Auth-Integration-Test
+
     runs-on: ubuntu-latest
     steps:
       - name: Checkout Repository
