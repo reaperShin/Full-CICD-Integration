@@ -444,24 +444,7 @@ jobs:
   test-summary:
     name: Test Summary
     needs:
-      - algorithms-direct-scoring
-      - algorithms-real-scoring
-      - algorithms-skill-matcher
-      - pages-rankings-navigation
-      - pages-video-navigation
-      - communication-email
-      - data-duplicate-detection
-      - data-resume-parser
-      - realtime-connection
-      - utilities
-      - additional-unit
-      - extended-edge-cases
-      - extended-error-handling
-      - extended-validation
-      - extended-security
-      - API-Auth
-      - Auth-Components
-      - Auth-Integration-Test
+      - build-artifact
     runs-on: ubuntu-latest
     if: always()
     steps:
