@@ -387,6 +387,41 @@ jobs:
       - run: npm ci
       - run: npm test -- __tests__/auth/integration
 
+# ... (all your existing test jobs)
+
+# =========================
+# 📦 Build Artifact & Store
+# =========================
+  build-artifact:
+    name: Build Production Artifact
+    # This job runs only if ALL your testing jobs succeed
+    needs: 
+      # List all your test jobs here to ensure they pass first
+      - algorithms-direct-scoring
+      # ... (all other test jobs)
+      - Auth-Integration-Test
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4 # Use v4 for better compatibility
+      
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Install dependencies and Build
+        run: |
+          npm ci
+          npm run build
+
+      - name: Upload Build Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: resume-ranking-production-build # A descriptive name for the file
+          path: build/ # This is the folder containing your static React files
+          retention-days: 7 # Optional: How long GitHub should store the file  
+
   # =========================
   # 📊 Test Summary
   # =========================
