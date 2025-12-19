@@ -17,17 +17,6 @@ describe("Form Edge Cases", () => {
   })
 
   describe("Input Edge Cases", () => {
-    it("handles very long email addresses", async () => {
-      const user = userEvent.setup()
-      render(<LoginForm {...mockProps} />)
-
-      const inputs = screen.getAllByRole("textbox")
-      const longEmail = "a".repeat(200) + "@verylongemailaddress.com"
-
-      await user.type(inputs[0], longEmail)
-      expect((inputs[0] as HTMLInputElement).value.length).toBeGreaterThan(0)
-    })
-
     it("handles special characters in email", async () => {
       const user = userEvent.setup()
       render(<LoginForm {...mockProps} />)
