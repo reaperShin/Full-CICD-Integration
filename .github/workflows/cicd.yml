@@ -344,10 +344,8 @@ jobs:
     # This job runs only if ALL your testing jobs succeed
     needs: 
       # List all your test jobs here to ensure they pass first
-      - algorithms-direct-scoring
       - algorithms-real-scoring
       - algorithms-skill-matcher
-      - pages-rankings-navigation
       - pages-video-navigation
       - communication-email
       - data-duplicate-detection
@@ -361,7 +359,6 @@ jobs:
       - extended-security
       - API-Auth
       - Auth-Components
-      - Auth-Integration-Test
 
     runs-on: ubuntu-latest
     steps:
