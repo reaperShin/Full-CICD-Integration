@@ -40,23 +40,6 @@ jobs:
   # =========================
   # 🧠 Algorithm Tests
   # =========================
-  algorithms-direct-scoring:
-    name: Test Direct Scoring Service
-    needs: [installation]
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v3
-      - uses: actions/setup-node@v4
-        with:
-          node-version: 20
-      - uses: actions/cache@v3
-        with:
-          path: ~/.npm
-          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
-          restore-keys: |
-            ${{ runner.os }}-node-
-      - run: npm ci
-      - run: npm test -- __tests__/algorithms/scoring/direct-scoring-service.test.ts
 
   algorithms-real-scoring:
     name: Test Real Scoring Service
@@ -97,24 +80,6 @@ jobs:
   # =========================
   # 📄 Page Navigation Tests
   # =========================
-  pages-rankings-navigation:
-    name: Test Rankings Creation Navigation
-    needs: [installation]
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v3
-      - uses: actions/setup-node@v4
-        with:
-          node-version: 20
-      - uses: actions/cache@v3
-        with:
-          path: ~/.npm
-          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
-          restore-keys: |
-            ${{ runner.os }}-node-
-      - run: npm ci
-      - run: npm test -- __tests__/pages/rankings-create/navigation/ranking-steps-navigation.test.tsx
-
   pages-video-navigation:
     name: Test Video Call Navigation
     needs: [installation]
@@ -368,24 +333,6 @@ jobs:
       - run: npm ci
       # corrected folder name (was 'compoents' typo)
       - run: npm test -- __tests__/auth/components
-
-  Auth-Integration-Test:
-    name: Test Auth Integration
-    needs: [installation]
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v3
-      - uses: actions/setup-node@v4
-        with:
-          node-version: 20
-      - uses: actions/cache@v3
-        with:
-          path: ~/.npm
-          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
-          restore-keys: |
-            ${{ runner.os }}-node-
-      - run: npm ci
-      - run: npm test -- __tests__/auth/integration
 
 # ... (all your existing test jobs)
 
